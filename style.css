@@ -1,0 +1,157 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f4f4;
+    color: #222;
+}
+
+header {
+    padding: 24px 32px;
+    background: #111827;
+    color: white;
+}
+
+header h1 {
+    margin: 0 0 8px 0;
+}
+
+header p {
+    margin: 0;
+}
+
+.app-layout {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 6px;
+    width: 70px;
+}
+
+button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+button:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+#startButton {
+    margin-top: 16px;
+    background: #059669;
+}
+
+.step-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.step-info {
+    background: #eef2ff;
+    border-left: 5px solid #4f46e5;
+    padding: 12px;
+    margin-bottom: 18px;
+    border-radius: 6px;
+}
+
+.matrix-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+td {
+    border: 1px solid #444;
+    min-width: 45px;
+    height: 38px;
+    text-align: center;
+    padding: 4px;
+    background: white;
+}
+
+.matrix-input {
+    width: 55px;
+    text-align: center;
+}
+
+.new-filled-cell {
+    background: #bbf7d0; /* verde claro para celdas ya calculadas */
+}
+
+.blank-cell {
+    color: #aaa;
+}
+
+/* Fila del pivote */
+.pivot-row {
+    background: #bfdbfe; /* azul claro */
+}
+
+/* Columna del pivote */
+.pivot-column {
+    background: #fde68a; /* amarillo claro */
+}
+
+/* Celda pivote */
+.pivot-cell {
+    background: #f97316; /* naranja */
+    color: white;
+    font-weight: bold;
+}
+
+/* Celda que se está calculando */
+.active-cell {
+    outline: 3px solid #ef4444;
+    font-weight: bold;
+}
+.formula-box {
+    margin-top: 20px;
+    background: #111827;
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+    font-family: Consolas, monospace;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+    .app-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .matrix-comparison {
+        grid-template-columns: 1fr;
+    }
+}

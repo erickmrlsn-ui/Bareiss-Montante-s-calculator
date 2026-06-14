@@ -5,34 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bareiss-Montante Calculator</title>
     <link rel="stylesheet" href="style.css">
+</head>
 
-</head>  
 <body>
     <header>
         <h1>Bareiss-Montante Calculator</h1>
-        <p>
-            Step by step matrix solver using Bareiss-Montante method
-        </p>
+        <p>Step by step matrix solver using the Bareiss-Montante method</p>
     </header>
-    <main>
-        <section>
+
+    <main class="app-layout">
+        <section class="card left-panel">
             <h2>Create matrix</h2>
-            <label for="rows">Rows:</label>
-            <input type="number" id="rows" min="1" value="3">
-            <label for="Columns">Columns:</label>
-            <input type="number" id="Columns" min="1" value="4">
-            <button id="MatrixButton">Create matrix</button>
-        </section>
-        <section>
-            <h2>Matrix</h2>
+
+            <div class="controls">
+                <label for="rows">Rows:</label>
+                <input type="number" id="rows" min="1" value="3">
+
+                <label for="columns">Columns:</label>
+                <input type="number" id="columns" min="1" value="4">
+
+                <button id="matrixButton">Create matrix</button>
+            </div>
+
+            <h2>Matrix input</h2>
             <div id="matrixContainer"></div>
-        </section>
-        <section>
-            <h2>Step by step explanation</h2>
-            <div id="stepsContainer"></div>
+
+            <button id="startButton" disabled>Start Montante</button>
         </section>
 
+        <section class="card right-panel">
+            <h2>Step by step explanation</h2>
+
+            <div class="step-controls">
+                <button id="previousStepButton" disabled>Previous</button>
+                <button id="nextStepButton" disabled>Next operation</button>
+                <span id="stepCounter"></span>
+            </div>
+
+            <div id="stepInfo" class="step-info">
+                Create a matrix and press Start Montante.
+            </div>
+
+            <div class="matrix-comparison">
+                <div>
+                    <h3>Current matrix</h3>
+                    <div id="currentMatrixContainer"></div>
+                </div>
+
+                <div>
+                    <h3>New matrix being built</h3>
+                    <div id="newMatrixContainer"></div>
+                </div>
+            </div>
+
+            <div id="formulaBox" class="formula-box"></div>
+        </section>
     </main>
-    <script scr="script.js"></script>
+
+    <script src="scripts.js"></script>
 </body>
 </html>
