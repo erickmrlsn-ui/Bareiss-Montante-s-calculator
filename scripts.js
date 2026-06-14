@@ -91,6 +91,14 @@ function buildMontanteEvents(initialMatrix) {
             const swapRow = findRowToSwap(currentMatrix, k);
 
             if (swapRow === -1) {
+                const zeroRowInfo = detectZeroRow(currentMatrix, columns - 1);
+
+                let formulaText = "The method cannot continue with this pivot.";
+
+                if (zeroRowInfo.found) {
+                    formulaText = getInfiniteSolutionText(initialMatrix);
+                }
+
                 generatedEvents.push({
                     title: "Zero pivot",
                     description: `The pivot in position (${k + 1}, ${k + 1}) is zero and there is no row available to swap.`,
@@ -98,12 +106,11 @@ function buildMontanteEvents(initialMatrix) {
                     newMatrix: createBlankMatrix(rows, columns),
                     currentHighlights: { pivot: [k, k] },
                     newHighlights: {},
-                    formula: "The method cannot continue with this pivot."
+                    formula: formulaText
                 });
 
                 return generatedEvents;
             }
-
             const temp = currentMatrix[k];
             currentMatrix[k] = currentMatrix[swapRow];
             currentMatrix[swapRow] = temp;
@@ -427,4 +434,187 @@ function clearStepPanel() {
 
 function iLabel() {
     return "i";
+}
+function detectZeroRow(matrix, variables) {
+    for (let i = 0; i < matrix.length; i++) {
+        let allZero = true;
+
+        for (let j = 0; j <= variables; j++) {
+            if (!isZero(matrix[i][j])) {
+                allZero = false;
+                break;
+            }
+        }
+
+        if (allZero) {
+            return {
+                found: true,
+                row: i
+            };
+        }
+    }
+
+    return {
+        found: false,
+        row: -1
+    };
+}
+
+function getInfiniteSolutionText(matrix) {
+    const variables = matrix[0].length - 1;
+    const rrefData = getRREF(matrix);
+    const rref = rrefData.matrix;
+    const pivotColumns = rrefData.pivotColumns;
+
+    const freeColumns = [];
+
+    for (let j = 0; j < variables; j++) {
+        if (!pivotColumns.includes(j)) {
+            freeColumns.push(j);
+        }
+    }
+
+    const parameterNames = ["t", "s", "r", "u", "v"];
+    const expressions = Array(variables).fill("");
+
+    for (let i = 0; i < freeColumns.length; i++) {
+        const freeColumn = freeColumns[i];
+        const parameter = parameterNames[i] || `t${i + 1}`;
+        expressions[freeColumn] = parameter;
+    }
+
+    for (let row = 0; row < pivotColumns.length; row++) {
+        const pivotColumn = pivotColumns[row];
+        let expression = formatNumber(rref[row][variables]);
+
+        for (let i = 0; i < freeColumns.length; i++) {
+            const freeColumn = freeColumns[i];
+            const parameter = parameterNames[i] || `t${i + 1}`;
+            const coefficient = -rref[row][freeColumn];
+
+            if (!isZero(coefficient)) {
+                expression += formatSignedTerm(coefficient, parameter);
+            }
+        }
+
+        expressions[pivotColumn] = expression;
+    }
+
+    let text = "";
+
+    text += "A complete zero row appeared:\n";
+    text += "0x1 + 0x2 + ... + 0xn = 0\n\n";
+    text += "This means one equation depends on the others.\n";
+    text += "Since there is at least one free variable, the system has infinitely many solutions.\n\n";
+
+    for (let i = 0; i < freeColumns.length; i++) {
+        const parameter = parameterNames[i] || `t${i + 1}`;
+        text += `Let x${freeColumns[i] + 1} = ${parameter}\n`;
+    }
+
+    text += "\nParametric solution:\n\n";
+
+    for (let i = 0; i < variables; i++) {
+        text += `x${i + 1} = ${expressions[i]}\n`;
+    }
+
+    text += "\nVector form:\n\n";
+    text += getVectorForm(rref, pivotColumns, freeColumns, variables, parameterNames);
+
+    return text;
+}
+
+function getRREF(matrix) {
+    let m = matrix.map(row => row.slice());
+    const rows = m.length;
+    const columns = m[0].length;
+    const variables = columns - 1;
+
+    let pivotRow = 0;
+    let pivotColumns = [];
+
+    for (let col = 0; col < variables && pivotRow < rows; col++) {
+        let bestRow = pivotRow;
+
+        for (let r = pivotRow + 1; r < rows; r++) {
+            if (Math.abs(m[r][col]) > Math.abs(m[bestRow][col])) {
+                bestRow = r;
+            }
+        }
+
+        if (Math.abs(m[bestRow][col]) < 0.0000001) {
+            continue;
+        }
+
+        let temp = m[pivotRow];
+        m[pivotRow] = m[bestRow];
+        m[bestRow] = temp;
+
+        let pivot = m[pivotRow][col];
+
+        for (let j = col; j < columns; j++) {
+            m[pivotRow][j] = m[pivotRow][j] / pivot;
+        }
+
+        for (let r = 0; r < rows; r++) {
+            if (r !== pivotRow) {
+                let factor = m[r][col];
+
+                for (let j = col; j < columns; j++) {
+                    m[r][j] = m[r][j] - factor * m[pivotRow][j];
+                }
+            }
+        }
+
+        pivotColumns.push(col);
+        pivotRow++;
+    }
+
+    return {
+        matrix: m.map(row => row.map(cleanNumber)),
+        pivotColumns
+    };
+}
+
+function formatSignedTerm(coefficient, parameter) {
+    if (isZero(coefficient)) {
+        return "";
+    }
+
+    const sign = coefficient > 0 ? " + " : " - ";
+    const absoluteValue = Math.abs(coefficient);
+
+    if (isZero(absoluteValue - 1)) {
+        return `${sign}${parameter}`;
+    }
+
+    return `${sign}${formatNumber(absoluteValue)}${parameter}`;
+}
+
+function getVectorForm(rref, pivotColumns, freeColumns, variables, parameterNames) {
+    let particular = Array(variables).fill(0);
+
+    for (let row = 0; row < pivotColumns.length; row++) {
+        const pivotColumn = pivotColumns[row];
+        particular[pivotColumn] = rref[row][variables];
+    }
+
+    let text = `X = [${particular.map(formatNumber).join(", ")}]`;
+
+    for (let i = 0; i < freeColumns.length; i++) {
+        const freeColumn = freeColumns[i];
+        const parameter = parameterNames[i] || `t${i + 1}`;
+        let direction = Array(variables).fill(0);
+
+        direction[freeColumn] = 1;
+
+        for (let row = 0; row < pivotColumns.length; row++) {
+            const pivotColumn = pivotColumns[row];
+            direction[pivotColumn] = -rref[row][freeColumn];
+        }
+
+        text += ` + ${parameter}[${direction.map(formatNumber).join(", ")}]`;
+    }
+
+    return text;
 }
