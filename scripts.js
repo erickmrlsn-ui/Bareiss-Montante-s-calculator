@@ -19,9 +19,9 @@ previousStepButton.addEventListener("click", previousStep);
 nextStepButton.addEventListener("click", nextStep);
 
 function createMatrix() {
-    const rows = Number(document.getElementById("rows").value);
-    const columns = Number(document.getElementById("columns").value);
-
+    const variables = Number(document.getElementById("variables").value);
+    const rows = variables;
+    const columns = variables + 1;
     matrixContainer.innerHTML = "";
     clearStepPanel();
 
@@ -52,14 +52,9 @@ function createMatrix() {
 }
 
 function startMontante() {
-    const rows = Number(document.getElementById("rows").value);
-    const columns = Number(document.getElementById("columns").value);
-
-    if (columns !== rows + 1) {
-        stepInfo.textContent = "For now, this version works with augmented matrices: n rows and n + 1 columns.";
-        return;
-    }
-
+    const variables = Number(document.getElementById("variables").value);
+    const rows = variables;
+    const columns = variables + 1;
     const matrix = getMatrixFromInputs(rows, columns);
 
     events = buildMontanteEvents(matrix);
@@ -504,7 +499,7 @@ function getInfiniteSolutionText(matrix) {
 
     text += "A complete zero row appeared:\n";
     text += "0x1 + 0x2 + ... + 0xn = 0\n\n";
-    text += "This means one equation depends on the others.\n";
+    text += "This means at least one equation depends on the others..\n";
     text += "Since there is at least one free variable, the system has infinitely many solutions.\n\n";
 
     for (let i = 0; i < freeColumns.length; i++) {

@@ -217,3 +217,9 @@ td.active-cell {
 .blank-cell {
     color: #a89f91;
 }
+.hint {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
