@@ -1,22 +1,44 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f4f4f4;
-    color: #222;
-}
+:root {
+    --bg: #f3ead7;
+    --panel: #fffaf0;
+    --ink: #2b2118;
+    --muted: #75685a;
 
+    --primary: #355e3b;
+    --primary-dark: #244229;
+
+    --accent: #b7791f;
+    --accent-dark: #8a5a12;
+
+    --pivot-row: #d8e2dc;
+    --pivot-column: #f3dca2;
+    --pivot-cell: #9c4221;
+    --active-cell: #7f1d1d;
+    --filled-cell: #d9ead3;
+
+    --border: #b7a990;
+}
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+}
 header {
-    padding: 24px 32px;
-    background: #111827;
-    color: white;
+    padding: 28px 36px;
+    background: #2b2118;
+    color: #fff7e6;
+    border-bottom: 5px solid var(--accent);
 }
 
 header h1 {
     margin: 0 0 8px 0;
+    letter-spacing: 0.5px;
 }
 
 header p {
     margin: 0;
+    color: #e8dcc7;
 }
 
 .app-layout {
@@ -27,10 +49,13 @@ header p {
 }
 
 .card {
-    background: white;
+    background: var(--panel);
+    border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    padding: 22px;
+    box-shadow: rgba(255, 255, 255, 0.5) 0px 0px 0px 1px inset,
+                rgba(43, 33, 24, 0.65) 0px 0px 0px 1px,
+                rgba(43, 33, 24, 0.18) 4px 4px 0px 0px;
 }
 
 .controls {
@@ -48,23 +73,33 @@ input {
 
 button {
     padding: 8px 12px;
-    border: none;
+    border: 1px solid var(--primary-dark);
     border-radius: 6px;
-    background: #2563eb;
+    background: var(--primary);
     color: white;
     cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover:not(:disabled) {
+    background: var(--primary-dark);
 }
 
 button:disabled {
-    background: #9ca3af;
+    background: #a89f91;
+    border-color: #a89f91;
     cursor: not-allowed;
 }
 
 #startButton {
     margin-top: 16px;
-    background: #059669;
+    background: var(--accent);
+    border-color: var(--accent-dark);
 }
 
+#startButton:hover:not(:disabled) {
+    background: var(--accent-dark);
+}
 .step-controls {
     display: flex;
     align-items: center;
@@ -73,13 +108,12 @@ button:disabled {
 }
 
 .step-info {
-    background: #eef2ff;
-    border-left: 5px solid #4f46e5;
+    background: #f8efd9;
+    border-left: 5px solid var(--accent);
     padding: 12px;
     margin-bottom: 18px;
     border-radius: 6px;
 }
-
 .matrix-comparison {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -92,12 +126,12 @@ table {
 }
 
 td {
-    border: 1px solid #444;
+    border: 1px solid #6f6253;
     min-width: 45px;
     height: 38px;
     text-align: center;
     padding: 4px;
-    background: white;
+    background: #fffdf7;
 }
 
 .matrix-input {
@@ -109,41 +143,41 @@ td {
     background: #bbf7d0; /* verde claro para celdas ya calculadas */
 }
 
-.blank-cell {
-    color: #aaa;
-}
-
-/* Fila del pivote */
 .pivot-row {
-    background: #bfdbfe; /* azul claro */
+    background: var(--pivot-row);
 }
 
-/* Columna del pivote */
 .pivot-column {
-    background: #fde68a; /* amarillo claro */
+    background: var(--pivot-column);
 }
 
-/* Celda pivote */
 .pivot-cell {
-    background: #f97316; /* naranja */
+    background: var(--pivot-cell);
     color: white;
     font-weight: bold;
 }
 
-/* Celda que se está calculando */
 .active-cell {
-    outline: 3px solid #ef4444;
+    outline: 3px solid var(--active-cell);
     font-weight: bold;
 }
-.formula-box {
+
+.new-filled-cell {
+    background: var(--filled-cell);
+}
+
+.blank-cell {
+    color: #a89f91;
+}.formula-box {
     margin-top: 20px;
-    background: #111827;
-    color: white;
+    background: #2b2118;
+    color: #fff7e6;
     padding: 14px;
     border-radius: 8px;
     font-family: Consolas, monospace;
     line-height: 1.5;
     white-space: pre-wrap;
+    border: 1px solid var(--border);
 }
 
 @media (max-width: 900px) {
@@ -154,4 +188,32 @@ td {
     .matrix-comparison {
         grid-template-columns: 1fr;
     }
+}
+/* Matrix highlight priority */
+
+.new-filled-cell {
+    background: var(--filled-cell);
+}
+
+.pivot-row {
+    background: var(--pivot-row);
+}
+
+.pivot-column {
+    background: var(--pivot-column);
+}
+
+td.pivot-cell {
+    background: var(--pivot-cell);
+    color: white;
+    font-weight: bold;
+}
+
+td.active-cell {
+    outline: 3px solid var(--active-cell);
+    font-weight: bold;
+}
+
+.blank-cell {
+    color: #a89f91;
 }
