@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bareiss-Montante Method Theory</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Bareiss-Montante Method</h1>
+        <p>A short theoretical guide for solving systems of linear equations.</p>
+
+        <nav class="top-nav">
+            <a href="index.html">Calculator</a>
+            <a href="theory.html">Theory</a>
+        </nav>
+    </header>
+
+    <main class="theory-layout">
+        <article class="card theory-card">
+            <h2>What is the Bareiss-Montante method?</h2>
+            <p>
+                The Bareiss-Montante method is an elimination method used to solve
+                systems of linear equations through an augmented matrix. It transforms
+                the matrix step by step until the coefficient part becomes diagonal.
+            </p>
+
+            <h2>Augmented matrix</h2>
+            <p>
+                A system with n variables is represented using an augmented matrix
+                with n rows and n + 1 columns. The last column contains the constants
+                from the right side of the equations.
+            </p>
+
+            <div class="formula-card">
+                n variables → n rows and n + 1 columns
+            </div>
+
+            <h2>Main formula</h2>
+            <p>
+                At each stage, the method uses a pivot and the previous pivot to
+                calculate the new values of the matrix.
+            </p>
+
+            <div class="formula-card">
+                a'ij = (pivot · aij - aik · akj) / previous pivot
+            </div>
+
+            <h2>Step-by-step procedure</h2>
+            <ol>
+                <li>Select the pivot from the diagonal.</li>
+                <li>Keep the pivot row unchanged.</li>
+                <li>Turn the other values in the pivot column into zero.</li>
+                <li>Calculate the rest of the new matrix using the Montante formula.</li>
+                <li>Repeat the process with the next pivot.</li>
+                <li>Read the final solution from the diagonal matrix.</li>
+            </ol>
+
+            <h2>Special cases</h2>
+
+            <h3>Infinitely many solutions</h3>
+            <p>
+                If a complete zero row appears, it means at least one equation depends
+                on the others. In that case, the system has free variables and therefore
+                infinitely many solutions.
+            </p>
+
+            <div class="formula-card">
+                0x1 + 0x2 + ... + 0xn = 0
+            </div>
+
+            <h3>No solution</h3>
+            <p>
+                If the coefficients in a row are all zero but the constant is not zero,
+                the system contains a contradiction and has no solution.
+            </p>
+
+            <div class="formula-card">
+                0x1 + 0x2 + ... + 0xn = c, where c ≠ 0
+            </div>
+
+            <h2>Example</h2>
+            <p>
+                Consider the following system:
+            </p>
+
+            <div class="formula-card">
+                x1 + x2 + x3 = 4
+            </div>
+
+            <p>
+                This equation alone does not determine a unique value for all variables.
+                If we let x2 = t and x3 = s, then:
+            </p>
+
+            <div class="formula-card">
+                x1 = 4 - t - s<br>
+                x2 = t<br>
+                x3 = s
+            </div>
+
+            <p>
+                In vector form:
+            </p>
+
+            <div class="formula-card">
+                X = [4, 0, 0] + t[-1, 1, 0] + s[-1, 0, 1]
+            </div>
+        </article>
+    </main>
+</body>
+</html>
