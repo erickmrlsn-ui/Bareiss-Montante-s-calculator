@@ -319,3 +319,20 @@ td.contradiction-value {
     font-weight: bold;
     outline: 3px solid #2b2118;
 }
+.theory-figure {
+    margin: 24px 0;
+    text-align: center;
+}
+
+.theory-figure img {
+    max-width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: rgba(43, 33, 24, 0.18) 4px 4px 0px 0px;
+}
+
+.theory-figure figcaption {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.95rem;
+}

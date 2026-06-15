@@ -10,7 +10,7 @@
 <body>
     <header>
         <h1>Bareiss-Montante Method</h1>
-        <p>A short theoretical guide for solving systems of linear equations.</p>
+        <p>A theoretical guide for solving systems of linear equations step by step.</p>
 
         <nav class="top-nav">
             <a href="index.html">Calculator</a>
@@ -20,14 +20,14 @@
 
     <main class="theory-layout">
         <article class="card theory-card">
+
             <h2>What is the Bareiss-Montante method?</h2>
             <p>
                 The Bareiss-Montante method is an elimination method used to solve systems of
                 linear equations through an augmented matrix. Its objective is similar to
-                Gauss-Jordan reduction: to transform the system into a form where the solution
+                Gauss-Jordan reduction: to transform the matrix into a form where the solution
                 can be read clearly.
             </p>
-
             <p>
                 One advantage of this method is that it usually preserves integer values during
                 the process, which makes the calculations cleaner. The method advances through
@@ -40,9 +40,9 @@
                 calculate the new values of the matrix.
             </p>
 
-            <div class="formula-card">
-                a'ij = (pivot · aij - aik · akj) / previous pivot
-            </div>
+            <figure class="theory-figure">
+                <img src="img/1.png" alt="Bareiss-Montante main formula">
+            </figure>
 
             <p>
                 In the first stage, the previous pivot is equal to 1. After that, the previous
@@ -56,21 +56,9 @@
                 right side of the equations.
             </p>
 
-            <div class="formula-card">
-                x + y + z = 6<br>
-                2x - y + z = 3<br>
-                x + 2y - z = 2
-            </div>
-
-            <p>
-                This system is represented as:
-            </p>
-
-            <div class="formula-card">
-                [ 1&nbsp;&nbsp; 1&nbsp;&nbsp; 1 | 6 ]<br>
-                [ 2&nbsp; -1&nbsp;&nbsp; 1 | 3 ]<br>
-                [ 1&nbsp;&nbsp; 2&nbsp; -1 | 2 ]
-            </div>
+            <figure class="theory-figure">
+                <img src="img/2.png" alt="Example of augmented matrix">
+            </figure>
 
             <h2>Step-by-step procedure</h2>
             <ol>
@@ -84,60 +72,152 @@
 
             <h2>Example</h2>
             <p>
-                Consider the following augmented matrix:
+                Using the same augmented matrix, the first step is to copy the pivot row
+                and place zeros in the pivot column, except in the pivot position.
             </p>
 
-            <div class="formula-card">
-                [ 1&nbsp;&nbsp; 1&nbsp;&nbsp; 1 | 6 ]<br>
-                [ 2&nbsp; -1&nbsp;&nbsp; 1 | 3 ]<br>
-                [ 1&nbsp;&nbsp; 2&nbsp; -1 | 2 ]
-            </div>
+            <figure class="theory-figure">
+                <img src="img/3.png" alt="First pivot row and pivot column">
+            </figure>
 
             <p>
-                In the first stage, the pivot is 1 and the previous pivot is also 1.
-                The pivot row is copied into the new matrix, and the other values in the
-                pivot column become zero.
+                Since this is the first stage, the previous pivot is 1. For example:
             </p>
+
+            <figure class="theory-figure formula-image">
+                <img src="img/4.png" alt="Calculation of a prime 22">
+            </figure>
+
+            <figure class="theory-figure">
+                <img src="img/5.png" alt="First calculated value in the new matrix">
+            </figure>
 
             <p>
-                For example, to calculate the value in position a'22:
+                The same formula is used for the next position:
             </p>
 
-            <div class="formula-card">
-                a'22 = ((1)(-1) - (2)(1)) / 1 = -3
-            </div>
+            <figure class="theory-figure formula-image">
+                <img src="img/6.png" alt="Calculation of next matrix value">
+            </figure>
+
+            <figure class="theory-figure">
+                <img src="img/7.png" alt="Second calculated value in the new matrix">
+            </figure>
 
             <p>
-                The same formula is applied to the other positions that are not in the pivot
-                row or pivot column. After repeating the process through the matrix, the method
-                produces a diagonal matrix.
+                The process continues by changing the row and column values according
+                to the position being calculated.
             </p>
 
-            <div class="formula-card">
-                [ 7&nbsp;&nbsp; 0&nbsp;&nbsp; 0 | 7 ]<br>
-                [ 0&nbsp;&nbsp; 7&nbsp;&nbsp; 0 | 14 ]<br>
-                [ 0&nbsp;&nbsp; 0&nbsp;&nbsp; 7 | 21 ]
-            </div>
+            <figure class="theory-figure formula-image">
+                <img src="img/8.png" alt="Calculation of another matrix value">
+            </figure>
+
+            <figure class="theory-figure">
+                <img src="img/9.png" alt="Third calculated value in the new matrix">
+            </figure>
 
             <p>
-                Finally, each row is divided by its diagonal value:
+                After completing all the required positions, the first stage is finished.
             </p>
 
-            <div class="formula-card">
-                [ 1&nbsp;&nbsp; 0&nbsp;&nbsp; 0 | 1 ]<br>
-                [ 0&nbsp;&nbsp; 1&nbsp;&nbsp; 0 | 2 ]<br>
-                [ 0&nbsp;&nbsp; 0&nbsp;&nbsp; 1 | 3 ]
-            </div>
+            <figure class="theory-figure">
+                <img src="img/10.png" alt="First stage completed">
+            </figure>
+
+            <h2>Second stage</h2>
+            <p>
+                The second stage uses the matrix obtained from the previous step.
+                The next pivot is selected from the main diagonal.
+            </p>
+
+            <figure class="theory-figure">
+                <img src="img/11.png" alt="Second pivot row and column">
+            </figure>
 
             <p>
-                Therefore, the solution is:
+                Now the pivot is the second diagonal value, and the previous pivot is the
+                pivot from the first stage.
             </p>
 
-            <div class="formula-card">
-                x1 = 1<br>
-                x2 = 2<br>
-                x3 = 3
-            </div>
+            <figure class="theory-figure formula-image">
+                <img src="img/12.png" alt="Second stage first calculation">
+            </figure>
+
+            <figure class="theory-figure">
+                <img src="img/13.png" alt="Second stage first calculated value">
+            </figure>
+
+            <p>
+                The same formula is repeated for the other positions that are not in the
+                pivot row or pivot column.
+            </p>
+
+            <figure class="theory-figure formula-image">
+                <img src="img/14.png" alt="Second stage next calculation">
+            </figure>
+
+            <figure class="theory-figure">
+                <img src="img/15.png" alt="Second stage next calculated value">
+            </figure>
+
+            <p>
+                After repeating the process through the matrix, the second stage is completed.
+            </p>
+
+            <figure class="theory-figure">
+                <img src="img/16.png" alt="Second stage completed">
+            </figure>
+
+            <h2>Third stage</h2>
+            <p>
+                The method continues with the next pivot. In this stage, the previous pivot
+                is no longer 1, so the denominator in the formula changes.
+            </p>
+
+            <figure class="theory-figure">
+                <img src="img/17.png" alt="Third pivot row and column">
+            </figure>
+
+            <figure class="theory-figure formula-image">
+                <img src="img/18.png" alt="Third stage first calculation">
+            </figure>
+
+            <figure class="theory-figure">
+                <img src="img/19.png" alt="Third stage first calculated value">
+            </figure>
+
+            <p>
+                The same process is repeated until every required value in the new matrix
+                has been calculated.
+            </p>
+
+            <figure class="theory-figure formula-image">
+                <img src="img/20.png" alt="Third stage next calculation">
+            </figure>
+
+            <figure class="theory-figure">
+                <img src="img/21.png" alt="Third stage next calculated value">
+            </figure>
+
+            <p>
+                At the end of the Bareiss-Montante process, a diagonal matrix is obtained.
+            </p>
+
+            <figure class="theory-figure">
+                <img src="img/22.png" alt="Final diagonal matrix">
+            </figure>
+
+            <h2>Final normalization</h2>
+            <p>
+                Finally, each row is divided by its diagonal value. This turns the coefficient
+                matrix into the identity matrix and allows the solution to be read directly
+                from the last column.
+            </p>
+
+            <figure class="theory-figure">
+                <img src="img/23.png" alt="Normalized final matrix">
+            </figure>
 
             <h2>Special cases</h2>
 
@@ -148,25 +228,21 @@
                 infinitely many solutions.
             </p>
 
-            <div class="formula-card">
-                0x1 + 0x2 + ... + 0xn = 0
-            </div>
+            <figure class="theory-figure">
+                <img src="img/24.png" alt="Infinitely many solutions example">
+            </figure>
 
             <h3>No solution</h3>
             <p>
                 If the coefficients in a row are all zero but the augmented value is not zero,
-                the system contains a contradiction.
+                the system contains a contradiction. The left side is always zero, so it cannot
+                be equal to a nonzero number.
             </p>
 
-            <div class="formula-card">
-                0x1 + 0x2 + ... + 0xn = c, where c ≠ 0
-            </div>
+            <figure class="theory-figure">
+                <img src="img/25.png" alt="No solution example">
+            </figure>
 
-            <p>
-                This is impossible because the left side is always zero, so the system is
-                inconsistent and has no solution.
-            </p>
-            </div>
         </article>
     </main>
 </body>
