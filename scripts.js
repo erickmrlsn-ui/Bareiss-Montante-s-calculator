@@ -238,14 +238,28 @@ a'${i + 1}${j + 1} = ${formatNumber(result)}`
         previousPivot = pivot;
     }
 
+    const normalizedMatrix = normalizeFinalMatrix(currentMatrix);
+
     generatedEvents.push({
-        title: "Final result",
-        description: "The method is complete. The solution is obtained by dividing the last column by the diagonal values.",
+        title: "Normalize final matrix",
+        description: "The method is complete. Now each row is divided by its diagonal value so the coefficient matrix becomes the identity matrix.",
         currentMatrix: cloneMatrix(currentMatrix),
-        newMatrix: cloneMatrix(currentMatrix),
+        newMatrix: cloneMatrix(normalizedMatrix),
         currentHighlights: {},
         newHighlights: {},
-        formula: getSolutionText(currentMatrix)
+        formula: `${getNormalizationText(currentMatrix)}
+
+        ${getNormalizedSolutionText(normalizedMatrix)}`
+    });
+
+    generatedEvents.push({
+        title: "Final solution",
+        description: "After normalization, the last column gives the value of each variable directly.",
+        currentMatrix: cloneMatrix(normalizedMatrix),
+        newMatrix: cloneMatrix(normalizedMatrix),
+        currentHighlights: {},
+        newHighlights: {},
+        formula: getNormalizedSolutionText(normalizedMatrix)
     });
 
     return generatedEvents;
@@ -609,6 +623,55 @@ function getVectorForm(rref, pivotColumns, freeColumns, variables, parameterName
         }
 
         text += ` + ${parameter}[${direction.map(formatNumber).join(", ")}]`;
+    }
+
+    return text;
+}
+
+function normalizeFinalMatrix(matrix) {
+    const rows = matrix.length;
+    const columns = matrix[0].length;
+    let normalizedMatrix = cloneMatrix(matrix);
+
+    for (let i = 0; i < rows; i++) {
+        const diagonal = matrix[i][i];
+
+        if (!isZero(diagonal)) {
+            for (let j = 0; j < columns; j++) {
+                normalizedMatrix[i][j] = cleanNumber(matrix[i][j] / diagonal);
+            }
+        }
+    }
+
+    return normalizedMatrix;
+}
+
+function getNormalizationText(matrix) {
+    const rows = matrix.length;
+
+    let text = "To read the solution clearly, divide each row by its diagonal value.\n\n";
+
+    for (let i = 0; i < rows; i++) {
+        const diagonal = matrix[i][i];
+
+        if (!isZero(diagonal)) {
+            text += `R${i + 1} = R${i + 1} / ${formatNumber(diagonal)}\n`;
+        }
+    }
+
+    text += "\nThis turns the diagonal values into 1, so the coefficient matrix becomes the identity matrix.";
+
+    return text;
+}
+
+function getNormalizedSolutionText(matrix) {
+    const rows = matrix.length;
+    const lastColumn = matrix[0].length - 1;
+
+    let text = "The normalized matrix directly shows the solution:\n\n";
+
+    for (let i = 0; i < rows; i++) {
+        text += `x${i + 1} = ${formatNumber(matrix[i][lastColumn])}\n`;
     }
 
     return text;
