@@ -86,12 +86,44 @@ function buildMontanteEvents(initialMatrix) {
             const swapRow = findRowToSwap(currentMatrix, k);
 
             if (swapRow === -1) {
-                const zeroRowInfo = detectZeroRow(currentMatrix, columns - 1);
+                const specialRowInfo = detectSpecialRow(currentMatrix, columns - 1);
 
-                let formulaText = "The method cannot continue with this pivot.";
+                if (specialRowInfo.type === "infinite") {
+                    generatedEvents.push({
+                        title: "Infinitely many solutions",
+                        description: `Row ${specialRowInfo.row + 1} became a complete zero row. This means at least one equation depends on the others.`,
+                        currentMatrix: cloneMatrix(currentMatrix),
+                        newMatrix: cloneMatrix(currentMatrix),
+                        currentHighlights: {
+                            zeroRows: [specialRowInfo.row]
+                        },
+                        newHighlights: {
+                            zeroRows: [specialRowInfo.row]
+                        },
+                        formula: getInfiniteSolutionText(initialMatrix)
+                    });
 
-                if (zeroRowInfo.found) {
-                    formulaText = getInfiniteSolutionText(initialMatrix);
+                    return generatedEvents;
+                }
+
+                if (specialRowInfo.type === "none") {
+                    generatedEvents.push({
+                        title: "No solution",
+                        description: `Row ${specialRowInfo.row + 1} has all zero coefficients, but the augmented value is not zero.`,
+                        currentMatrix: cloneMatrix(currentMatrix),
+                        newMatrix: cloneMatrix(currentMatrix),
+                        currentHighlights: {
+                            contradictionRows: [specialRowInfo.row],
+                            contradictionValue: [specialRowInfo.row, columns - 1]
+                        },
+                        newHighlights: {
+                            contradictionRows: [specialRowInfo.row],
+                            contradictionValue: [specialRowInfo.row, columns - 1]
+                        },
+                        formula: getNoSolutionText(columns - 1, specialRowInfo.constant)
+                    });
+
+                    return generatedEvents;
                 }
 
                 generatedEvents.push({
@@ -101,7 +133,7 @@ function buildMontanteEvents(initialMatrix) {
                     newMatrix: createBlankMatrix(rows, columns),
                     currentHighlights: { pivot: [k, k] },
                     newHighlights: {},
-                    formula: formulaText
+                    formula: "The method cannot continue with this pivot."
                 });
 
                 return generatedEvents;
@@ -311,6 +343,21 @@ function renderMatrix(container, matrix, highlights) {
             if (highlights.column === j) {
                 td.classList.add("pivot-column");
             }
+            if (highlights.zeroRows && highlights.zeroRows.includes(i)) {
+                td.classList.add("zero-row");
+            }
+
+            if (highlights.contradictionRows && highlights.contradictionRows.includes(i)) {
+                td.classList.add("contradiction-row");
+            }
+
+            if (
+                highlights.contradictionValue &&
+                highlights.contradictionValue[0] === i &&
+                highlights.contradictionValue[1] === j
+            ) {
+                td.classList.add("contradiction-value");
+            }
 
             if (highlights.pivot && highlights.pivot[0] === i && highlights.pivot[1] === j) {
                 td.classList.add("pivot-cell");
@@ -444,31 +491,43 @@ function clearStepPanel() {
 function iLabel() {
     return "i";
 }
-function detectZeroRow(matrix, variables) {
-    for (let i = 0; i < matrix.length; i++) {
-        let allZero = true;
 
-        for (let j = 0; j <= variables; j++) {
+function detectSpecialRow(matrix, variables) {
+    for (let i = 0; i < matrix.length; i++) {
+        let allCoefficientsZero = true;
+
+        for (let j = 0; j < variables; j++) {
             if (!isZero(matrix[i][j])) {
-                allZero = false;
+                allCoefficientsZero = false;
                 break;
             }
         }
 
-        if (allZero) {
+        const augmentedValue = matrix[i][variables];
+
+        if (allCoefficientsZero && isZero(augmentedValue)) {
             return {
-                found: true,
-                row: i
+                type: "infinite",
+                row: i,
+                constant: augmentedValue
+            };
+        }
+
+        if (allCoefficientsZero && !isZero(augmentedValue)) {
+            return {
+                type: "none",
+                row: i,
+                constant: augmentedValue
             };
         }
     }
 
     return {
-        found: false,
-        row: -1
+        type: "unknown",
+        row: -1,
+        constant: 0
     };
 }
-
 function getInfiniteSolutionText(matrix) {
     const variables = matrix[0].length - 1;
     const rrefData = getRREF(matrix);
@@ -513,7 +572,7 @@ function getInfiniteSolutionText(matrix) {
 
     text += "A complete zero row appeared:\n";
     text += "0x1 + 0x2 + ... + 0xn = 0\n\n";
-    text += "This means at least one equation depends on the others..\n";
+    text += "This means at least one equation depends on the others.\n";
     text += "Since there is at least one free variable, the system has infinitely many solutions.\n\n";
 
     for (let i = 0; i < freeColumns.length; i++) {
@@ -531,6 +590,22 @@ function getInfiniteSolutionText(matrix) {
     text += getVectorForm(rref, pivotColumns, freeColumns, variables, parameterNames);
 
     return text;
+}
+function getNoSolutionText(variables, constant) {
+    const leftSide = Array.from(
+        { length: variables },
+        (_, index) => `0x${index + 1}`
+    ).join(" + ");
+
+    return `A contradiction row appeared:
+
+${leftSide} = ${formatNumber(constant)}
+
+The left side is always 0, no matter what values the variables take.
+
+So it is impossible for 0 to be equal to ${formatNumber(constant)}.
+
+Therefore, the system is inconsistent and has no solution.`;
 }
 
 function getRREF(matrix) {

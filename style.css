@@ -284,3 +284,38 @@ td.active-cell {
     border: 1px solid var(--border);
     white-space: normal;
 }
+td.zero-row {
+    background: #e7e2d6 !important;
+    color: var(--muted);
+    font-weight: bold;
+}
+
+td.contradiction-row {
+    background: #f2c8b7 !important;
+    color: #7f1d1d;
+    font-weight: bold;
+}
+
+td.contradiction-value {
+    background: #7f1d1d !important;
+    color: white;
+    font-weight: bold;
+}
+td.zero-row {
+    background: #e7e2d6 !important;
+    color: var(--muted);
+    font-weight: bold;
+}
+
+td.contradiction-row {
+    background: #f2c8b7 !important;
+    color: #7f1d1d;
+    font-weight: bold;
+}
+
+td.contradiction-value {
+    background: #7f1d1d !important;
+    color: #fff7e6;
+    font-weight: bold;
+    outline: 3px solid #2b2118;
+}
