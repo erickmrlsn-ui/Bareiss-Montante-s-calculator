@@ -336,3 +336,27 @@ td.contradiction-value {
     color: var(--muted);
     font-size: 0.95rem;
 }
+select {
+    padding: 7px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fffdf7;
+    color: var(--ink);
+}
+select {
+    padding: 7px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fffdf7;
+    color: var(--ink);
+}
+
+td.augmented-separator {
+    border-left: 4px solid var(--accent);
+}
+
+.identity-input {
+    background: #efe6d3;
+    color: var(--muted);
+    font-weight: bold;
+}

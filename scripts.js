@@ -2,6 +2,7 @@ const matrixButton = document.getElementById("matrixButton");
 const startButton = document.getElementById("startButton");
 const previousStepButton = document.getElementById("previousStepButton");
 const nextStepButton = document.getElementById("nextStepButton");
+const operationSelect = document.getElementById("operation");
 
 const matrixContainer = document.getElementById("matrixContainer");
 const currentMatrixContainer = document.getElementById("currentMatrixContainer");
@@ -17,13 +18,26 @@ matrixButton.addEventListener("click", createMatrix);
 startButton.addEventListener("click", startMontante);
 previousStepButton.addEventListener("click", previousStep);
 nextStepButton.addEventListener("click", nextStep);
+operationSelect.addEventListener("change", updateOperationHint);
 
 function createMatrix() {
-    const variables = Number(document.getElementById("variables").value);
-    const rows = variables;
-    const columns = variables + 1;
+    const operation = document.getElementById("operation").value;
+    const size = Number(document.getElementById("variables").value);
+
+    const rows = size;
+    let columns;
+
+    if (operation === "inverse") {
+        columns = size * 2;
+    } else if (operation === "determinant") {
+        columns = size;
+    } else {
+        columns = size + 1;
+    }
+
     matrixContainer.innerHTML = "";
     clearStepPanel();
+    updateOperationHint();
 
     const table = document.createElement("table");
 
@@ -40,6 +54,16 @@ function createMatrix() {
             input.dataset.row = i;
             input.dataset.column = j;
 
+            if (operation !== "determinant" && j === size) {
+                td.classList.add("augmented-separator");
+            }
+
+            if (operation === "inverse" && j >= size) {
+                input.value = i === j - size ? "1" : "0";
+                input.disabled = true;
+                input.classList.add("identity-input");
+            }
+
             td.appendChild(input);
             tr.appendChild(td);
         }
@@ -52,24 +76,34 @@ function createMatrix() {
 }
 
 function startMontante() {
-    const variables = Number(document.getElementById("variables").value);
-    const rows = variables;
-    const columns = variables + 1;
+    const operation = document.getElementById("operation").value;
+    const size = Number(document.getElementById("variables").value);
+
+    const rows = size;
+    let columns;
+
+    if (operation === "inverse") {
+        columns = size * 2;
+    } else if (operation === "determinant") {
+        columns = size;
+    } else {
+        columns = size + 1;
+    }
     const matrix = getMatrixFromInputs(rows, columns);
 
-    events = buildMontanteEvents(matrix);
+    events = buildMontanteEvents(matrix, operation, size);
     currentEventIndex = 0;
 
     renderCurrentEvent();
 }
 
-function buildMontanteEvents(initialMatrix) {
-    const rows = initialMatrix.length;
+function buildMontanteEvents(initialMatrix, operationMode = "system", size = initialMatrix.length) {    const rows = initialMatrix.length;
     const columns = initialMatrix[0].length;
 
     let currentMatrix = cloneMatrix(initialMatrix);
     let previousPivot = 1;
     let generatedEvents = [];
+    let rowSwapCount = 0;
 
     generatedEvents.push({
         title: "Initial matrix",
@@ -86,6 +120,43 @@ function buildMontanteEvents(initialMatrix) {
             const swapRow = findRowToSwap(currentMatrix, k);
 
             if (swapRow === -1) {
+                if (operationMode === "determinant") {
+                    generatedEvents.push({
+                        title: "Determinant is zero",
+                        description: `The pivot in position (${k + 1}, ${k + 1}) is zero and there is no row available to swap.`,
+                        currentMatrix: cloneMatrix(currentMatrix),
+                        newMatrix: cloneMatrix(currentMatrix),
+                        currentHighlights: {
+                            pivot: [k, k],
+                            zeroRows: [k]
+                        },
+                        newHighlights: {
+                            zeroRows: [k]
+                        },
+                        formula: "A zero pivot with no possible row swap means the matrix is singular.\n\nTherefore:\n\ndet(A) = 0"
+                    });
+
+                    return generatedEvents;
+                }
+                
+                if (operationMode === "inverse") {
+                    generatedEvents.push({
+                        title: "Matrix has no inverse",
+                        description: `The pivot in position (${k + 1}, ${k + 1}) is zero and there is no row available to swap.`,
+                        currentMatrix: cloneMatrix(currentMatrix),
+                        newMatrix: cloneMatrix(currentMatrix),
+                        currentHighlights: {
+                            pivot: [k, k],
+                            zeroRows: [k]
+                        },
+                        newHighlights: {
+                            zeroRows: [k]
+                        },
+                        formula: getSingularMatrixText()
+                    });
+
+                    return generatedEvents;
+                }
                 const specialRowInfo = detectSpecialRow(currentMatrix, columns - 1);
 
                 if (specialRowInfo.type === "infinite") {
@@ -141,6 +212,7 @@ function buildMontanteEvents(initialMatrix) {
             const temp = currentMatrix[k];
             currentMatrix[k] = currentMatrix[swapRow];
             currentMatrix[swapRow] = temp;
+            rowSwapCount++;
 
             generatedEvents.push({
                 title: "Row swap",
@@ -256,21 +328,44 @@ a'${i + 1}${j + 1} = ${formatNumber(result)}`
             }
         }
 
-        generatedEvents.push({
-            title: `Stage ${k + 1} complete`,
-            description: `The new matrix for stage ${k + 1} is complete. It will become the current matrix for the next stage.`,
-            currentMatrix: cloneMatrix(currentMatrix),
-            newMatrix: cloneMatrix(newMatrix),
-            currentHighlights: {},
-            newHighlights: {},
-            formula: `Next previous pivot = ${formatNumber(pivot)}`
-        });
+
 
         currentMatrix = cloneMatrix(newMatrix);
         previousPivot = pivot;
     }
 
+    if (operationMode === "determinant") {
+        const determinant = getMontanteDeterminant(currentMatrix, rowSwapCount);
+
+        generatedEvents.push({
+            title: "Determinant result",
+            description: "The Bareiss-Montante process is complete. The determinant can be read from the final diagonal matrix.",
+            currentMatrix: cloneMatrix(currentMatrix),
+            newMatrix: cloneMatrix(currentMatrix),
+            currentHighlights: {},
+            newHighlights: {},
+            formula: getDeterminantText(currentMatrix, determinant, rowSwapCount)
+        });
+
+        return generatedEvents;
+    }
     const normalizedMatrix = normalizeFinalMatrix(currentMatrix);
+
+    if (operationMode === "inverse") {
+        generatedEvents.push({
+            title: "Normalize inverse matrix",
+            description: "The method is complete. Now each row is divided by its diagonal value so the left side becomes the identity matrix.",
+            currentMatrix: cloneMatrix(currentMatrix),
+            newMatrix: cloneMatrix(normalizedMatrix),
+            currentHighlights: {},
+            newHighlights: {},
+            formula: `${getNormalizationText(currentMatrix)}
+
+    ${getInverseText(normalizedMatrix, size)}`
+        });
+
+        return generatedEvents;
+    }
 
     generatedEvents.push({
         title: "Normalize final matrix",
@@ -281,17 +376,7 @@ a'${i + 1}${j + 1} = ${formatNumber(result)}`
         newHighlights: {},
         formula: `${getNormalizationText(currentMatrix)}
 
-        ${getNormalizedSolutionText(normalizedMatrix)}`
-    });
-
-    generatedEvents.push({
-        title: "Final solution",
-        description: "After normalization, the last column gives the value of each variable directly.",
-        currentMatrix: cloneMatrix(normalizedMatrix),
-        newMatrix: cloneMatrix(normalizedMatrix),
-        currentHighlights: {},
-        newHighlights: {},
-        formula: getNormalizedSolutionText(normalizedMatrix)
+    ${getNormalizedSolutionText(normalizedMatrix)}`
     });
 
     return generatedEvents;
@@ -365,6 +450,9 @@ function renderMatrix(container, matrix, highlights) {
 
             if (isActiveCell(highlights.activeCells, i, j)) {
                 td.classList.add("active-cell");
+            }
+            if (j === matrix.length) {
+                td.classList.add("augmented-separator");
             }
 
             tr.appendChild(td);
@@ -748,6 +836,75 @@ function getNormalizedSolutionText(matrix) {
     for (let i = 0; i < rows; i++) {
         text += `x${i + 1} = ${formatNumber(matrix[i][lastColumn])}\n`;
     }
+
+    return text;
+}
+function updateOperationHint() {
+    const operation = document.getElementById("operation").value;
+    const operationHint = document.getElementById("operationHint");
+
+    if (operation === "inverse") {
+        operationHint.textContent = "Inverse matrix creates an augmented matrix in the form [A | I].";
+    } else if (operation === "determinant") {
+        operationHint.textContent = "Determinant creates a square matrix A and calculates det(A).";
+    } else {
+        operationHint.textContent = "Solve system creates an augmented matrix with n rows and n + 1 columns.";
+    }
+}
+
+function getInverseText(matrix, size) {
+    let text = "The left side is now the identity matrix.\n";
+    text += "Therefore, the right side is the inverse matrix:\n\n";
+    text += "A⁻¹ =\n";
+
+    for (let i = 0; i < size; i++) {
+        let row = [];
+
+        for (let j = size; j < size * 2; j++) {
+            row.push(formatNumber(matrix[i][j]));
+        }
+
+        text += `[ ${row.join("   ")} ]\n`;
+    }
+
+    return text;
+}
+
+function getSingularMatrixText() {
+    return `The matrix does not have an inverse.
+
+A zero pivot appeared and no row swap was possible.
+
+This means the matrix is singular, so det(A) = 0.
+
+Therefore, A⁻¹ does not exist.`;
+}
+function getMontanteDeterminant(matrix, rowSwapCount) {
+    let determinant = 0;
+
+    for (let i = 0; i < matrix.length; i++) {
+        if (!isZero(matrix[i][i])) {
+            determinant = matrix[i][i];
+            break;
+        }
+    }
+
+    if (rowSwapCount % 2 !== 0) {
+        determinant = -determinant;
+    }
+
+    return cleanNumber(determinant);
+}
+
+function getDeterminantText(matrix, determinant, rowSwapCount) {
+    let text = "The final matrix is diagonal.\n\n";
+    text += "In the Bareiss-Montante method, the diagonal value represents the determinant.\n\n";
+
+    if (rowSwapCount > 0) {
+        text += `There were ${rowSwapCount} row swap(s), so the determinant sign is adjusted.\n\n`;
+    }
+
+    text += `det(A) = ${formatNumber(determinant)}`;
 
     return text;
 }
