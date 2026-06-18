@@ -360,3 +360,40 @@ td.augmented-separator {
     color: var(--muted);
     font-weight: bold;
 }
+.theory-operation-menu {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 28px 0;
+    padding: 12px;
+    background: #f8efd9;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.theory-tab {
+    background: var(--primary);
+    color: white;
+    border: 1px solid var(--primary-dark);
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.theory-tab:hover {
+    background: var(--primary-dark);
+}
+
+.theory-tab.active {
+    background: var(--accent);
+    border-color: var(--accent-dark);
+}
+
+.theory-operation-section {
+    display: none;
+}
+
+.theory-operation-section.active-theory-section {
+    display: block;
+}

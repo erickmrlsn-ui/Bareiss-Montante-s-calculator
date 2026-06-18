@@ -44,206 +44,290 @@
                 <img src="img/1.png" alt="Bareiss-Montante main formula">
             </figure>
 
-            <p>
-                In the first stage, the previous pivot is equal to 1. After that, the previous
-                pivot becomes the pivot from the stage before.
-            </p>
+                <p>
+                    In the first stage, the previous pivot is equal to 1. After that, the previous
+                    pivot becomes the pivot from the stage before.
+                </p>
+            <div class="theory-operation-menu">
+                <button class="theory-tab active" data-target="systemTheory">Solve systems</button>
+                <button class="theory-tab" data-target="inverseTheory">Inverse matrix</button>
+                <button class="theory-tab" data-target="determinantTheory">Determinant</button>
+            </div>
+            <section id="systemTheory" class="theory-operation-section active-theory-section">
 
-            <h2>Augmented matrix</h2>
-            <p>
-                A system with n variables can be represented using an augmented matrix with
-                n rows and n + 1 columns. The last column contains the constants from the
-                right side of the equations.
-            </p>
+                <h2>Augmented matrix</h2>
+                <p>
+                    A system with n variables can be represented using an augmented matrix with
+                    n rows and n + 1 columns. The last column contains the constants from the
+                    right side of the equations.
+                </p>
 
-            <figure class="theory-figure">
-                <img src="img/2.png" alt="Example of augmented matrix">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/2.png" alt="Example of augmented matrix">
+                </figure>
 
-            <h2>Step-by-step procedure</h2>
-            <ol>
-                <li>Select the pivot from the main diagonal. The pivot must be different from zero.</li>
-                <li>Keep the pivot row unchanged.</li>
-                <li>Turn the other values in the pivot column into zero.</li>
-                <li>Calculate the rest of the new matrix using the Bareiss-Montante formula.</li>
-                <li>Repeat the process with the next pivot.</li>
-                <li>At the end, divide each row by its diagonal value to obtain the identity matrix.</li>
-            </ol>
+                <h2>Step-by-step procedure</h2>
+                <ol>
+                    <li>Select the pivot from the main diagonal. The pivot must be different from zero.</li>
+                    <li>Keep the pivot row unchanged.</li>
+                    <li>Turn the other values in the pivot column into zero.</li>
+                    <li>Calculate the rest of the new matrix using the Bareiss-Montante formula.</li>
+                    <li>Repeat the process with the next pivot.</li>
+                    <li>At the end, divide each row by its diagonal value to obtain the identity matrix.</li>
+                </ol>
 
-            <h2>Example</h2>
-            <p>
-                Using the same augmented matrix, the first step is to copy the pivot row
-                and place zeros in the pivot column, except in the pivot position.
-            </p>
+                <h2>Example</h2>
+                <p>
+                    Using the same augmented matrix, the first step is to copy the pivot row
+                    and place zeros in the pivot column, except in the pivot position.
+                </p>
 
-            <figure class="theory-figure">
-                <img src="img/3.png" alt="First pivot row and pivot column">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/3.png" alt="First pivot row and pivot column">
+                </figure>
 
-            <p>
-                Since this is the first stage, the previous pivot is 1. For example:
-            </p>
+                <p>
+                    Since this is the first stage, the previous pivot is 1. For example:
+                </p>
 
-            <figure class="theory-figure formula-image">
-                <img src="img/4.png" alt="Calculation of a prime 22">
-            </figure>
+                <figure class="theory-figure formula-image">
+                    <img src="img/4.png" alt="Calculation of a prime 22">
+                </figure>
 
-            <figure class="theory-figure">
-                <img src="img/5.png" alt="First calculated value in the new matrix">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/5.png" alt="First calculated value in the new matrix">
+                </figure>
 
-            <p>
-                The same formula is used for the next position:
-            </p>
+                <p>
+                    The same formula is used for the next position:
+                </p>
 
-            <figure class="theory-figure formula-image">
-                <img src="img/6.png" alt="Calculation of next matrix value">
-            </figure>
+                <figure class="theory-figure formula-image">
+                    <img src="img/6.png" alt="Calculation of next matrix value">
+                </figure>
 
-            <figure class="theory-figure">
-                <img src="img/7.png" alt="Second calculated value in the new matrix">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/7.png" alt="Second calculated value in the new matrix">
+                </figure>
 
-            <p>
-                The process continues by changing the row and column values according
-                to the position being calculated.
-            </p>
+                <p>
+                    The process continues by changing the row and column values according
+                    to the position being calculated.
+                </p>
 
-            <figure class="theory-figure formula-image">
-                <img src="img/8.png" alt="Calculation of another matrix value">
-            </figure>
+                <figure class="theory-figure formula-image">
+                    <img src="img/8.png" alt="Calculation of another matrix value">
+                </figure>
 
-            <figure class="theory-figure">
-                <img src="img/9.png" alt="Third calculated value in the new matrix">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/9.png" alt="Third calculated value in the new matrix">
+                </figure>
 
-            <p>
-                After completing all the required positions, the first stage is finished.
-            </p>
+                <p>
+                    After completing all the required positions, the first stage is finished.
+                </p>
 
-            <figure class="theory-figure">
-                <img src="img/10.png" alt="First stage completed">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/10.png" alt="First stage completed">
+                </figure>
 
-            <h2>Second stage</h2>
-            <p>
-                The second stage uses the matrix obtained from the previous step.
-                The next pivot is selected from the main diagonal.
-            </p>
+                <h2>Second stage</h2>
+                <p>
+                    The second stage uses the matrix obtained from the previous step.
+                    The next pivot is selected from the main diagonal.
+                </p>
 
-            <figure class="theory-figure">
-                <img src="img/11.png" alt="Second pivot row and column">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/11.png" alt="Second pivot row and column">
+                </figure>
 
-            <p>
-                Now the pivot is the second diagonal value, and the previous pivot is the
-                pivot from the first stage.
-            </p>
+                <p>
+                    Now the pivot is the second diagonal value, and the previous pivot is the
+                    pivot from the first stage.
+                </p>
 
-            <figure class="theory-figure formula-image">
-                <img src="img/12.png" alt="Second stage first calculation">
-            </figure>
+                <figure class="theory-figure formula-image">
+                    <img src="img/12.png" alt="Second stage first calculation">
+                </figure>
 
-            <figure class="theory-figure">
-                <img src="img/13.png" alt="Second stage first calculated value">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/13.png" alt="Second stage first calculated value">
+                </figure>
 
-            <p>
-                The same formula is repeated for the other positions that are not in the
-                pivot row or pivot column.
-            </p>
+                <p>
+                    The same formula is repeated for the other positions that are not in the
+                    pivot row or pivot column.
+                </p>
 
-            <figure class="theory-figure formula-image">
-                <img src="img/14.png" alt="Second stage next calculation">
-            </figure>
+                <figure class="theory-figure formula-image">
+                    <img src="img/14.png" alt="Second stage next calculation">
+                </figure>
 
-            <figure class="theory-figure">
-                <img src="img/15.png" alt="Second stage next calculated value">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/15.png" alt="Second stage next calculated value">
+                </figure>
 
-            <p>
-                After repeating the process through the matrix, the second stage is completed.
-            </p>
+                <p>
+                    After repeating the process through the matrix, the second stage is completed.
+                </p>
 
-            <figure class="theory-figure">
-                <img src="img/16.png" alt="Second stage completed">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/16.png" alt="Second stage completed">
+                </figure>
 
-            <h2>Third stage</h2>
-            <p>
-                The method continues with the next pivot. In this stage, the previous pivot
-                is no longer 1, so the denominator in the formula changes.
-            </p>
+                <h2>Third stage</h2>
+                <p>
+                    The method continues with the next pivot. In this stage, the previous pivot
+                    is no longer 1, so the denominator in the formula changes.
+                </p>
 
-            <figure class="theory-figure">
-                <img src="img/17.png" alt="Third pivot row and column">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/17.png" alt="Third pivot row and column">
+                </figure>
 
-            <figure class="theory-figure formula-image">
-                <img src="img/18.png" alt="Third stage first calculation">
-            </figure>
+                <figure class="theory-figure formula-image">
+                    <img src="img/18.png" alt="Third stage first calculation">
+                </figure>
 
-            <figure class="theory-figure">
-                <img src="img/19.png" alt="Third stage first calculated value">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/19.png" alt="Third stage first calculated value">
+                </figure>
 
-            <p>
-                The same process is repeated until every required value in the new matrix
-                has been calculated.
-            </p>
+                <p>
+                    The same process is repeated until every required value in the new matrix
+                    has been calculated.
+                </p>
 
-            <figure class="theory-figure formula-image">
-                <img src="img/20.png" alt="Third stage next calculation">
-            </figure>
+                <figure class="theory-figure formula-image">
+                    <img src="img/20.png" alt="Third stage next calculation">
+                </figure>
 
-            <figure class="theory-figure">
-                <img src="img/21.png" alt="Third stage next calculated value">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/21.png" alt="Third stage next calculated value">
+                </figure>
 
-            <p>
-                At the end of the Bareiss-Montante process, a diagonal matrix is obtained.
-            </p>
+                <p>
+                    At the end of the Bareiss-Montante process, a diagonal matrix is obtained.
+                </p>
 
-            <figure class="theory-figure">
-                <img src="img/22.png" alt="Final diagonal matrix">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/22.png" alt="Final diagonal matrix">
+                </figure>
 
-            <h2>Final normalization</h2>
-            <p>
-                Finally, each row is divided by its diagonal value. This turns the coefficient
-                matrix into the identity matrix and allows the solution to be read directly
-                from the last column.
-            </p>
+                <h2>Final normalization</h2>
+                <p>
+                    Finally, each row is divided by its diagonal value. This turns the coefficient
+                    matrix into the identity matrix and allows the solution to be read directly
+                    from the last column.
+                </p>
 
-            <figure class="theory-figure">
-                <img src="img/23.png" alt="Normalized final matrix">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/23.png" alt="Normalized final matrix">
+                </figure>
 
-            <h2>Special cases</h2>
+                <h2>Special cases</h2>
 
-            <h3>Infinitely many solutions</h3>
-            <p>
-                If a complete zero row appears, it means that at least one equation depends
-                on the others. In this case, the system has free variables and therefore has
-                infinitely many solutions.
-            </p>
+                <h3>Infinitely many solutions</h3>
+                <p>
+                    If a complete zero row appears, it means that at least one equation depends
+                    on the others. In this case, the system has free variables and therefore has
+                    infinitely many solutions.
+                </p>
 
-            <figure class="theory-figure">
-                <img src="img/24.png" alt="Infinitely many solutions example">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/24.png" alt="Infinitely many solutions example">
+                </figure>
 
-            <h3>No solution</h3>
-            <p>
-                If the coefficients in a row are all zero but the augmented value is not zero,
-                the system contains a contradiction. The left side is always zero, so it cannot
-                be equal to a nonzero number.
-            </p>
+                <h3>No solution</h3>
+                <p>
+                    If the coefficients in a row are all zero but the augmented value is not zero,
+                    the system contains a contradiction. The left side is always zero, so it cannot
+                    be equal to a nonzero number.
+                </p>
 
-            <figure class="theory-figure">
-                <img src="img/25.png" alt="No solution example">
-            </figure>
+                <figure class="theory-figure">
+                    <img src="img/25.png" alt="No solution example">
+                </figure>
+            </section>
+            <section id="inverseTheory" class="theory-operation-section">
+                <h2>Inverse matrix</h2>
+
+                <p>
+                    The Bareiss-Montante method can also be used to calculate the inverse of a
+                    square matrix. Instead of using an augmented matrix in the form [A | b], the
+                    method uses the form [A | I], where I is the identity matrix.
+                </p>
+
+                <div class="formula-card">
+                    [ A | I ] → [ I | A⁻¹ ]
+                </div>
+
+                <p>
+                    The left side contains the original matrix A, and the right side starts as
+                    the identity matrix. After applying the Bareiss-Montante process, the left
+                    side becomes diagonal. Then each row is divided by its diagonal value.
+                </p>
+
+                <p>
+                    When the left side becomes the identity matrix, the right side contains the
+                    inverse matrix.
+                </p>
+
+                <div class="formula-card">
+                    A · A⁻¹ = I
+                </div>
+
+                <h3>When does the inverse not exist?</h3>
+
+                <p>
+                    If the matrix is singular, its determinant is zero. In that case, the inverse
+                    does not exist. In the calculator, this can happen when a zero pivot appears
+                    and no row swap is possible.
+                </p>
+
+                <div class="formula-card">
+                    det(A) = 0 → A⁻¹ does not exist
+                </div>
+            </section>
+
+            <section id="determinantTheory" class="theory-operation-section">
+                <h2>Determinant</h2>
+
+                <p>
+                    The Bareiss-Montante method can also be used to calculate the determinant
+                    of a square matrix. In this case, the calculator only uses the matrix A,
+                    without an augmented column.
+                </p>
+
+                <div class="formula-card">
+                    A → diagonal matrix
+                </div>
+
+                <p>
+                    After applying the Montante process, the determinant can be read from the
+                    final diagonal matrix. If row swaps are made during the process, the sign of
+                    the determinant must be adjusted.
+                </p>
+
+                <div class="formula-card">
+                    One row swap changes the sign of det(A)
+                </div>
+
+                <h3>Zero determinant</h3>
+
+                <p>
+                    If the method produces a zero pivot and no row swap is possible, the matrix
+                    is singular. This means that the determinant is zero.
+                </p>
+
+                <div class="formula-card">
+                    det(A) = 0
+                </div>
+            </section>
+
 
         </article>
     </main>
+<script src="theory.js"></script>
 </body>
 </html>
